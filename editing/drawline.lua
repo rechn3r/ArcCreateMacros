@@ -3,7 +3,7 @@ do
     local Dialog = require("rech.dialogs.Dialog")
     ---@type rech.dialogs.Dropdown
     local Dropdown = require("rech.dialogs.fields.Dropdown")
-    ---@module rech.editing.DrawLine
+    ---@class rech.editing.DrawLine
     local this = {}
     this.__index = this
 

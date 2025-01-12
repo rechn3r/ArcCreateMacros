@@ -53,7 +53,7 @@ do
             local fromTiming = arc.timing
             local toTiming = arc.endTiming
             local timingGroup = arc.timingGroup
-            local step =  Context.beatLengthAt(fromTiming, timingGroup) / Context.beatlineDensity 
+            local step =  Context.beatLengthAt(fromTiming, timingGroup) / Context.beatlineDensity
             local isTrace = arc.isTrace
             for t1, t2 in iterators.range(fromTiming, toTiming, step) do
                 local t = t1 + (t2 - t1) * percent
@@ -61,10 +61,10 @@ do
                 t = math.floor(t)
                 t2 = math.floor(t2)
                 if t1 ~= t then
-                    commands = commands + Event.arc(t1, arc.positionAt(t1), t, arc.positionAt(t), isTrace, arc.color, arc.type, arc.timingGroup, arc.sfx).save()
+                    commands.add(Event.arc(t1, arc.positionAt(t1), t, arc.positionAt(t), isTrace, arc.color, arc.type, arc.timingGroup, arc.sfx).save())
                 end
                 if addAlternate and t ~= t2 then
-                    commands = commands + Event.arc(t, arc.positionAt(t), t2, arc.positionAt(t2), not isTrace, arc.color, arc.type, arc.timingGroup, arc.sfx).save()
+                    commands.add(Event.arc(t, arc.positionAt(t), t2, arc.positionAt(t2), not isTrace, arc.color, arc.type, arc.timingGroup, arc.sfx).save())
                 end
             end
         end

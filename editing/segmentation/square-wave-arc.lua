@@ -35,11 +35,11 @@ do
         local flag = true
         for t1, t2 in iterators.range(arc1.timing, arc1.endTiming, step) do
             if flag then
-                commands = commands + Event.arc(t1, arc1.positionAt(t1), t1, arc2.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
-                commands = commands + Event.arc(t1, arc2.positionAt(t1), t2, arc2.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
+                commands.add(Event.arc(t1, arc1.positionAt(t1), t1, arc2.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
+                commands.add(Event.arc(t1, arc2.positionAt(t1), t2, arc2.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
             else
-                commands = commands + Event.arc(t1, arc2.positionAt(t1), t1, arc1.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
-                commands = commands + Event.arc(t1, arc1.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
+                commands.add(Event.arc(t1, arc2.positionAt(t1), t1, arc1.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
+                commands.add(Event.arc(t1, arc1.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
             end
             flag = not flag
         end

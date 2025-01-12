@@ -37,9 +37,9 @@ do
         local step =  Context.beatLengthAt(fromTiming, timingGroup) / Context.beatlineDensity
         for t1, t2 in iterators.range(fromTiming, toTiming, step) do
             if arc1.positionAt(t1) ~= arc2.positionAt(t1) then
-                commands = commands + Event.arc(t1, arc1.positionAt(t1), t1, arc2.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
+                commands.add(Event.arc(t1, arc1.positionAt(t1), t1, arc2.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
             end
-            commands = commands + Event.arc(t1, arc2.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
+            commands.add(Event.arc(t1, arc2.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save())
         end
 
         commands.commit()

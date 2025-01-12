@@ -1,5 +1,5 @@
 do
-    ---@module rech.editing.RemoveArcTapTrace
+    ---@class rech.editing.RemoveArcTapTrace
     local this = {}
     this.__index = this
 
@@ -30,7 +30,7 @@ do
             local trace = arctap.arc
             local t = arctap.timing
             command.add(arctap.delete())
-            local arc, arctap = Chores.SaveSingleArcTap(t, trace.positionAt(t, true), trace.color, trace.timingGroup)
+            local arc, arctap = Chores.SaveSingleArcTap(t, trace.positionAt(t, true), trace.color, trace.timingGroup, trace.sfx)
             command.add(arc)
             command.add(arctap)
         end
