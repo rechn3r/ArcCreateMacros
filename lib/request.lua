@@ -1,4 +1,5 @@
 do
+    ---@class RSelectionResult
     RSelectionResult = {}
     ---@type LuaTap[]
     RSelectionResult.tap = nil
@@ -17,7 +18,7 @@ do
     ---@type LuaChartEvent[]
     RSelectionResult.all = nil
 
-    ---@module rech.lib.Request
+    ---@class rech.lib.Request
     local this = {}
     this.__index = this
 

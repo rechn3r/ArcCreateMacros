@@ -1,5 +1,5 @@
 do
-    ---@module rech.lib.CustomConstraints
+    ---@class rech.lib.CustomConstraints
     local this = {}
     this.__index = this
 

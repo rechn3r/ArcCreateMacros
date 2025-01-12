@@ -1,5 +1,5 @@
 do
-    ---@module rech.lib.TryImport
+    ---@class rech.lib.TryImport
     local this = {}
 
     ---@param modname string

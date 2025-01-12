@@ -1,11 +1,11 @@
 do
-    ---@module rech.lib.Iterators
+    ---@class rech.lib.Iterators
     local this = {}
 
     ---@param from number
     ---@param to number
     ---@param step number
-    ---@param diff number
+    ---@param diff? number
     function this.range(from, to, step, diff)
         if diff == nil then diff = 1 end
         local f = from
