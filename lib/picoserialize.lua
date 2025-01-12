@@ -1,5 +1,5 @@
 do
-    ---@module rech.lib.Pico
+    ---@class rech.lib.Pico
     local pico = {}
     pico.__index = pico
     local default_identifier = {
