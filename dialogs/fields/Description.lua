@@ -4,7 +4,6 @@ do
     ---@type rech.dialogs.BaseField
     local BaseField = require("rech.dialogs.fields.BaseField")
 
-    ---@param description string
     ---@class rech.dialogs.Description : rech.dialogs.BaseField
     local this = Class(BaseField)
 

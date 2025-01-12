@@ -10,7 +10,7 @@ do
     ---@field private fields table<number, rech.dialogs.BaseField>
     Dialog__inst = {}
 
-    ---@param constraint string
+    ---@param title string
     function Dialog:init(title)
         self.title = title
         self.fields = {}
@@ -18,7 +18,7 @@ do
         return self
     end
 
-    ---@param field rech.dialogs.BaseField
+    ---@vararg rech.dialogs.BaseField
     function Dialog:add(...)
         self.fields = table.pack(...)
         for _,field in ipairs({...}) do

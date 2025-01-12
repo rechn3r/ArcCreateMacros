@@ -6,12 +6,12 @@ do
     this.__index = this
 
     ---@class rech.dialogs.BaseField
-    ---@field private field DialogField
-    ---@field private parent MacroRequest
+    ---@field protected field DialogField
+    ---@field protected parent MacroRequest
     ---@field public key string
     local this__inst = {}
 
-    ---@param key string
+    ---@param key? string|nil
     function this:init(key)
         if key == nil then
             local randstr = require("rech.lib.randomstring")
@@ -31,24 +31,24 @@ do
         return self
     end
 
-    ---@param value string
-    ---@return rech.dialogs.BaseField
+    ---@param value? string
+    ---@return rech.dialogs.BaseField|string
     function this:placeholder(value)
         if value == nil then return self.field.hint end
         self.field.setHint(value)
         return self
     end
 
-    ---@param value string
-    ---@return rech.dialogs.BaseField
+    ---@param value? string
+    ---@return rech.dialogs.BaseField|string
     function this:label(value)
         if value == nil then return self.field.label end
         self.field.setLabel(value)
         return self
     end
 
-    ---@param value string
-    ---@return rech.dialogs.BaseField
+    ---@param value? string
+    ---@return rech.dialogs.BaseField|string
     function this:tooltip(value)
         if value == nil then return self.field.tooltip end
         self.field.setTooltip(value)

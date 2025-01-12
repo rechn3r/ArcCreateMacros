@@ -15,7 +15,7 @@ do
 
     ---Match text with lua pattern language
     ---@param value string
-    ---@return FieldConstraint
+    ---@return FieldConstraint|rech.dialogs.Dropdown
     function this:pattern(value, message)
         self.field.fieldConstraint.custom(function(input)
             return input:match(value) ~= nil

@@ -41,7 +41,7 @@ do
         return self
     end
 
-    ---@return number
+    ---@return integer|nil
     function this:result_num()
         local result = self:result()
         for i,v in ipairs(self.options) do
