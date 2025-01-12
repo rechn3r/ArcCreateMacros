@@ -8,24 +8,28 @@ do
     addFolderWithIcon(nil, __FOLDER_ID, "ea0b","rech's macro")
     do
         addFolderWithIcon(__FOLDER_ID, __FOLDER_ID_EDITING, "e3c9","[Editing]")
-        do
-            addFolderWithIcon(__FOLDER_ID_EDITING, __FOLDER_ID_EDITING_SEGMENTATION, "e919","[Arc Segmentation]")
+        -- do
+        --     addFolderWithIcon(__FOLDER_ID_EDITING, __FOLDER_ID_EDITING_SEGMENTATION, "e919","[Arc Segmentation]")
 
-            ---@type rech.editing.NarArc
-            local narArc = require("rech.editing.segmentation.nar-arcs")
-            narArc.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
+        --     ---@type rech.editing.NarArc
+        --     local narArc = require("rech.editing.segmentation.nar-arcs")
+        --     narArc.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
 
-            ---@type rech.editing.SquareWaveArc
-            local squareWave = require("rech.editing.segmentation.square-wave-arc")
-            squareWave.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
+        --     ---@type rech.editing.SquareWaveArc
+        --     local squareWave = require("rech.editing.segmentation.square-wave-arc")
+        --     squareWave.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
 
-            ---@type rech.editing.MacaroniArc
-            local narArc = require("rech.editing.segmentation.macaroni-arcs")
-            narArc.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
-        end
+        --     ---@type rech.editing.MacaroniArc
+        --     local narArc = require("rech.editing.segmentation.macaroni-arcs")
+        --     narArc.initMacro(__FOLDER_ID_EDITING_SEGMENTATION)
+        -- end
         ---@type rech.editing.ArcReverse
         local arcReverse = require("rech.editing.arc-reverse")
         arcReverse.initMacro(__FOLDER_ID_EDITING)
+
+        ---@type rech.editing.ArcToastify
+        local arcToastify = require("rech.editing.arc-toastify")
+        arcToastify.initMacro(__FOLDER_ID_EDITING)
 
         ---@type rech.editing.DrawLine
         local drawline = require("rech.editing.drawline")
