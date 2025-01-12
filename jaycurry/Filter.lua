@@ -2,7 +2,7 @@ do
     ---@type rech.Class
     local Class = require("rech.Class")
 
-    ---@module rech.jaycurry.Filter
+    ---@class rech.jaycurry.Filter
     ---Custom constraints and some built-in constraints
     local this = Class()
 
@@ -79,8 +79,8 @@ do
             f = f .. "local tg = Event.getTimingGroup(e.timingGroup)\n"
         end
         f = f .. "return" .. condition
-        f = load(f)
-            return f
+        local fn = load(f)
+            return fn
     end
 
     ---@return boolean
@@ -376,13 +376,13 @@ do
         ["d"] = this.duration,
         ["color"] = this.color,
         ["sfx"] = this.sfx,
-        ["fx"] = this.fx,
+        ["fx"] = this.sfx,
         ["x1"] = this.x1,
         ["x2"] = this.x2,
         ["y1"] = this.y1,
         ["y2"] = this.y2,
         ["void"] = this.void,
-        ["v"] = this.v,
+        ["v"] = this.void,
         ["easing"] = this.easing,
         ["e"] = this.easing,
         ["x"] = this.x,

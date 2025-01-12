@@ -4,7 +4,7 @@ JC selector can be grouped into 4 categories: Element Types, Attributes, Classes
 
 <size=18>Examples</size>
 <b>arc[y1>=1].void:arctap</b>
-This queries arctap where the arc is void and y1 is larger than 1.
+This queries arctap where the arc is void and y1 is equal or larger than 1.
 
 <b>arctap[x>=0,x<=1]</b>
 Selects ArcTap where their x is at 0~1.

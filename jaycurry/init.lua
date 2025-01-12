@@ -3,6 +3,7 @@ do
     local Class = require("rech.Class")
     ---@type rech.lib.TryImport
     local import = require("rech.lib.tryimport")
+---@diagnostic disable-next-line: cast-local-type
     import = import.import
     ---@type rech.dialogs.Dialog
     local Dialog = import("rech.dialogs.Dialog")
@@ -27,9 +28,13 @@ do
 
     -- history
     local lastQuery = ""
+    ---@type integer|nil
+    local lastOption = 0
 
     function this.initMacro(parentId)
-
+        removeMacro(__MACRO_ID__)
+        removeMacro(__MACRO_ID__ .. ".help")
+        removeMacro(__MACRO_ID__ .. ".apihelp")
         -- add macro
         addMacroWithIcon(parentId, __MACRO_ID__, "Query", "e1b7", this.queryUI)
         addMacroWithIcon(parentId, __MACRO_ID__ .. ".help", "Syntax Help", "e887", this.helpUI)
@@ -86,7 +91,7 @@ do
         ---@param r rech.jaycurry.JayCurry
         ["Move arcs"] = function (r)
             if #r.events.arc == 0 then
-                warn("There's no arc to move!")
+                notifyWarn("There's no arc to move!")
                 return
             end
             local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Move arcs")
@@ -168,9 +173,11 @@ do
         for key,_ in pairs(operations) do
             keys[#keys+1] = key
         end
-        local dropdown = Dropdown():set(keys):value(keys[1]):label("Select Operation")
+        ---@type rech.dialogs.Dropdown
+        local dropdown = Dropdown():set(keys):value(lastOption):label("Select Operation")
         dialog:add(dropdown)
         dialog:open()
+        lastOption = dropdown:result_num()-1
         operations[dropdown:result()](r)
     end
 

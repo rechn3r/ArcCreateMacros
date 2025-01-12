@@ -5,19 +5,16 @@ do
     local Filter = require("rech.jaycurry.Filter")
 
     ---@class rech.jaycurry.JayCurry
+    ---@field public events.all LuaChartEvent[]
+    ---@field public events.tap LuaTap[]
+    ---@field public events.hold LuaHold[]
+    ---@field public events.arc LuaArc[]
+    ---@field public events.arctap LuaArcTap[]
+    ---@field public events.timing LuaTiming[]
+    ---@field public events.camera LuaCamera[]
+    ---@field public events.scenecontrol LuaScenecontrol[]
+    ---@field public queryString string
     local this = Class()
-
-    ---@field private events table<string,LuaChartEvent[]>
-    ---@field private events.all LuaChartEvent
-    ---@field private events.tap LuaTap
-    ---@field private events.hold LuaHold
-    ---@field private events.arc LuaArc
-    ---@field private events.arctap LuaArcTap
-    ---@field private events.timing LuaTiming
-    ---@field private events.camera LuaCamera
-    ---@field private events.scenecontrol LuaScenecontrol
-    ---@field private query string
-    local this__inst = {}
 
     ---@enum rech.jaycurry.ElementTypes
     this.ElementTypes = {}
@@ -29,7 +26,7 @@ do
     this.ElementTypes.camera="camera"
     this.ElementTypes.scenecontrol="scenecontrol"
 
-    this.ClassTypes = {blue=1,red=2,green=3,void=4,solid=5,judgable=6,judgable=6,sky=7,floor=8,short=9,long=10}
+    this.ClassTypes = {blue=1,red=2,green=3,void=4,solid=5,judgable=6,judgeable=6,sky=7,floor=8,short=9,long=10}
     
     local registeredScenecontrol = {
         -- ArcCreate built-in Scenecontrol
@@ -187,7 +184,7 @@ do
 
     ---Returns batch command that offsets event timing by ms.
     ---@return LuaChartCommand
-    ---@param timing integer
+    ---@param offset integer
     function this:offset(offset)
         local command = Command.create()
         for _,item in ipairs(self.events.timing) do
@@ -298,8 +295,8 @@ do
     end
 
     ---Move objects to destination timing group
-    ---@return LuaChartCommand
     ---@param tg number
+    ---@return LuaChartCommand|nil
     function this:move(tg)
         if Event.getTimingGroup(tg) == nil then
             return nil
@@ -339,7 +336,7 @@ do
         return command
     end
 
-    ---@param index number
+    ---@param index number|nil
     ---@return LuaTimingGroup[]
     function this.GetTimingGroups(index)
         index = tonumber(index)
