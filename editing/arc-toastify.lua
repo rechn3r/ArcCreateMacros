@@ -26,9 +26,10 @@ do
         end
         local commands = Command.create(string.format("%s (%s)", __MACRO_DISPLAY_NAME, __MACRO_ID))
         for _, arc in ipairs(arcs) do
+            Event.setSelection({arc})
             Context.currentTiming = arc.timing
             local duration = arc.endTiming - arc.timing
-            local cutAt = request.Timing(false, "Select when the arc should be bent")
+            local cutAt = request.Timing(false, "Select when the highlighted arc should be bent")
             cutAt = cutAt - arc.timing
             while cutAt < 1 or cutAt > duration do
                 cutAt = request.Timing(false, "Target timing is outside arc timing, try again")
