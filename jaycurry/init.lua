@@ -14,7 +14,16 @@ do
     ---@type rech.dialogs.Dropdown
     local Dropdown = import("rech.dialogs.fields.Dropdown")
 
-    ---@module rech.jaycurry.init
+    ---@class rech.jaycurry.init
+    ---@field public events.all LuaChartEvent[]
+    ---@field public events.tap LuaTap[]
+    ---@field public events.hold LuaHold[]
+    ---@field public events.arc LuaArc[]
+    ---@field public events.arctap LuaArcTap[]
+    ---@field public events.timing LuaTiming[]
+    ---@field public events.camera LuaCamera[]
+    ---@field public events.scenecontrol LuaScenecontrol[]
+    ---@field public queryString string
     local this = Class()
 
     local __MACRO_ID__ = "rech.q"
@@ -27,6 +36,7 @@ do
     q = JayCurry.query
 
     -- history
+    ---@type string
     local lastQuery = ""
     ---@type integer|nil
     local lastOption = 0
@@ -58,10 +68,14 @@ do
         )
         dialog:open()
         lastQuery = query:result()
-        local ret = q(query:result())
-        if #ret.events.all ~= 0 then
-            ret:select()
+        ---@cast lastQuery string
+        if lastQuery:match("^#") then
+            local filter, _ = JayCurry._buildConstraint(lastQuery:sub(2))
+            log(filter:_build())
+            return
         end
+        
+        local ret = q(query:result())
         this.operationUI(ret)
     end
 
@@ -127,6 +141,7 @@ do
             dialog:add(dropdown)
             dialog:open()
             local c = r:copy(dropdown:result_num()-1)
+            if c == nil then return end
             c.name = "Copy to group " .. (dropdown:result_num()-1)
             c.commit()
         end,
@@ -148,6 +163,7 @@ do
             dialog:add(dropdown)
             dialog:open()
             local c = r:move(dropdown:result_num()-1)
+            if c == nil then return end
             c.name = "Move to group " .. (dropdown:result_num()-1)
             c.commit()
         end
@@ -157,6 +173,9 @@ do
         if #r.events.all == 0 then
             notify("There's no any event from selection, check query again.")
             return
+        else
+            r:select()
+            notify(#r.events.all .. " events selected.")
         end
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
         local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Operation")

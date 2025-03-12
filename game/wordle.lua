@@ -17,9 +17,8 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ]]
 
 do
-    ---@module rech.game.Wordle
+    ---@class rech.game.Wordle
     local this = {}
-    this.__index = this
 
     local __MACRO_ID = "rech.game.wordle"
     local __MACRO_DISPLAY_NAME = "Play Wordle"
@@ -43,7 +42,7 @@ do
         local history = ""
         local guesses = 0
         while true do
-            local desc = DialogField.create("history").description().setLabel(history)
+            local desc = DialogField.create("history").description("").setLabel(history)
             local inputfield = DialogField.create("input")
             inputfield.setLabel("Input")
             inputfield.setTooltip("Input 5 letters")

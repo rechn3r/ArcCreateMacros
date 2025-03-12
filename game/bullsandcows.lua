@@ -24,9 +24,8 @@ do
     ---@type rech.dialogs.TextField
     local TextField = require("rech.dialogs.fields.TextField")
 
-    ---@module rech.game.BullsAndCows
+    ---@class rech.game.BullsAndCows
     local this = {}
-    this.__index = this
 
     local __MACRO_ID = "rech.game.bullsandcows"
     local __MACRO_DISPLAY_NAME = "Play 1A2B/Bulls and Cows"
@@ -72,8 +71,8 @@ do
         return t
     end
 
-    ---@param input string
-    ---@param answer string
+    ---@param input table<string>
+    ---@param answer table<string>
     function this.check1a2b(input, answer)
         local a = 0
         local b = 0

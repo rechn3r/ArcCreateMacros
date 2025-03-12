@@ -34,11 +34,20 @@ do
             while cutAt < 1 or cutAt > duration do
                 cutAt = request.Timing(false, "Target timing is outside arc timing, try again")
             end
-            local newArc = Event.arc(arc.timing+cutAt, arc.endXY, arc.endTiming, arc.endXY, arc.isTrace, arc.color, "s", arc.timingGroup, arc.sfx)
-            commands.add(newArc.save())
-            arc.endTiming = math.floor(arc.timing+cutAt)
-            arc.type = "s"
-            commands.add(arc.save())
+            if arc.type:find("^so") == nil then
+                local newArc = Event.arc(arc.timing+cutAt, arc.endXY, arc.endTiming, arc.endXY, arc.isTrace, arc.color, "s", arc.timingGroup, arc.sfx)
+                commands.add(newArc.save())
+                arc.endTiming = math.floor(arc.timing+cutAt)
+                arc.type = "s"
+                commands.add(arc.save())
+            else
+                local newArc = Event.arc(arc.timing+cutAt, arc.startXY, arc.endTiming, arc.endXY, arc.isTrace, arc.color, "s", arc.timingGroup, arc.sfx)
+                commands.add(newArc.save())
+                arc.endXY = arc.startXY
+                arc.endTiming = math.floor(arc.timing+cutAt)
+                arc.type = "s"
+                commands.add(arc.save())
+            end
         end
         commands.commit()
     end

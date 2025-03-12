@@ -5,26 +5,18 @@ do
     local Filter = require("rech.jaycurry.Filter")
 
     ---@class rech.jaycurry.JayCurry
-    ---@field public events.all LuaChartEvent[]
-    ---@field public events.tap LuaTap[]
-    ---@field public events.hold LuaHold[]
-    ---@field public events.arc LuaArc[]
-    ---@field public events.arctap LuaArcTap[]
-    ---@field public events.timing LuaTiming[]
-    ---@field public events.camera LuaCamera[]
-    ---@field public events.scenecontrol LuaScenecontrol[]
-    ---@field public queryString string
     local this = Class()
 
-    ---@enum rech.jaycurry.ElementTypes
-    this.ElementTypes = {}
-    this.ElementTypes.tap="tap"
-    this.ElementTypes.hold="hod"
-    this.ElementTypes.arc="arc"
-    this.ElementTypes.arctap="arctap"
-    this.ElementTypes.timing="timing"
-    this.ElementTypes.camera="camera"
-    this.ElementTypes.scenecontrol="scenecontrol"
+    ---@enum
+    this.ElementTypes = {
+        tap = "tap",
+        hold = "hold",
+        arc = "arc",
+        arctap = "arctap",
+        timing = "timing",
+        camera = "camera",
+        scenecontrol = "scenecontrol"
+    }
 
     this.ClassTypes = {blue=1,red=2,green=3,void=4,solid=5,judgable=6,judgeable=6,sky=7,floor=8,short=9,long=10}
     
@@ -60,7 +52,7 @@ do
     
     function this.registerScenecontrol(scName, endTimingArgIndex)
         if endTimingArgIndex == nil then endTimingArgIndex = -1 end
-        registerScenecontrol[scName] = endTimingArgIndex
+        registeredScenecontrol[scName] = endTimingArgIndex
     end
     
     function this:init()
@@ -87,13 +79,13 @@ do
     end
 
     ---Static function for query, accepts multiple selectors, returns JayCurry instance.
-    ---@param query string
+    ---@param selectors string
     ---@return rech.jaycurry.JayCurry
     function this.query(selectors)
         local self = this()
         self.queryString = selectors
         for constraint in self.queryString:gmatch("[^%s]+") do
-            local result, flags = this._buildConstraint(constraint)
+            local result, flags = this.buildConstraint(constraint)
             ---@type EventSelectionRequest
             local req = nil
             if flags.selected then
@@ -131,7 +123,7 @@ do
         local oldSelection = Event.getCurrentSelection()
         coroutine.yield()
         Event.setSelection(self.events.all)
-        local result, flags = this._buildConstraint(selector:match("[^%s]+"))
+        local result, flags = this.buildConstraint(selector:match("[^%s]+"))
         local req = Event.getCurrentSelection(result)
         coroutine.yield()
         if flags.arctap then
@@ -184,7 +176,7 @@ do
 
     ---Returns batch command that offsets event timing by ms.
     ---@return LuaChartCommand
-    ---@param offset integer
+    ---@param offset number
     function this:offset(offset)
         local command = Command.create()
         for _,item in ipairs(self.events.timing) do
@@ -230,7 +222,7 @@ do
     end
 
     ---Copy objects to destination timing group
-    ---@return LuaChartCommand
+    ---@return LuaChartCommand?
     ---@param tg number
     function this:copy(tg, skipConflicts)
         if tg >= Context.timingGroupCount then
@@ -360,7 +352,15 @@ do
         return t
     end
 
-    ---@private
+    ---Build constraint on single selector
+    ---@public
+    ---@param query string
+    function this.buildConstraint(query)
+        local filter, flags = this._buildConstraint(query)
+        return EventSelectionConstraint.create().custom(filter:build(), ""), flags
+    end
+
+    ---real function that build constraints on single selector
     ---@param query string
     function this._buildConstraint(query)
         ---@type rech.jaycurry.Filter
@@ -441,8 +441,7 @@ do
             end
             f()
         end
-        local constraint = EventSelectionConstraint.create().any().custom(customFilter:build(), "")
-        return constraint, flags
+        return customFilter, flags
     end
 
     return this

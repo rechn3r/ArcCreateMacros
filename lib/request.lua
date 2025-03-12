@@ -1,22 +1,14 @@
 do
     ---@class RSelectionResult
+    ---@field tap LuaTap[]
+    ---@field hold LuaHold[]
+    ---@field arc LuaArc[]
+    ---@field arctap LuaArcTap[]
+    ---@field timing LuaTiming[]
+    ---@field camera LuaCamera[]
+    ---@field scenecontrol LuaScenecontrol[]
+    ---@field all LuaChartEvent[]
     RSelectionResult = {}
-    ---@type LuaTap[]
-    RSelectionResult.tap = nil
-    ---@type LuaHold[]
-    RSelectionResult.hold = nil
-    ---@type LuaArc[]
-    RSelectionResult.arc = nil
-    ---@type LuaArcTap[]
-    RSelectionResult.arctap = nil
-    ---@type LuaTiming[]
-    RSelectionResult.timing = nil
-    ---@type LuaCamera[]
-    RSelectionResult.camera = nil
-    ---@type LuaScenecontrol[]
-    RSelectionResult.scenecontrol = nil
-    ---@type LuaChartEvent[]
-    RSelectionResult.all = nil
 
     ---@class rech.lib.Request
     local this = {}
@@ -29,15 +21,16 @@ do
         local req = EventSelectionInput.requestSingleEvent(constraint, notification)
         coroutine.yield()
         ---@type RSelectionResult
-        local result = {}
-        result.all = req.resultCombined
-        result.tap = req.result["tap"]
-        result.hold = req.result["hold"]
-        result.arc = req.result["arc"]
-        result.arctap = req.result["arctap"]
-        result.timing = req.result["timing"]
-        result.camera = req.result["camera"]
-        result.scenecontrol = req.result["scenecontrol"]
+        local result = {
+            all = req.resultCombined,
+            tap = req.result["tap"],
+            hold = req.result["hold"],
+            arc = req.result["arc"],
+            arctap = req.result["arctap"],
+            timing = req.result["timing"],
+            camera = req.result["camera"],
+            scenecontrol = req.result["scenecontrol"]
+        }
         return result
     end
 
@@ -48,15 +41,16 @@ do
         local req = EventSelectionInput.requestEvents(constraint, notification)
         coroutine.yield()
         ---@type RSelectionResult
-        local result = {}
-        result.all = req.resultCombined
-        result.tap = req.result["tap"]
-        result.hold = req.result["hold"]
-        result.arc = req.result["arc"]
-        result.arctap = req.result["arctap"]
-        result.timing = req.result["timing"]
-        result.camera = req.result["camera"]
-        result.scenecontrol = req.result["scenecontrol"]
+        local result = {
+            all = req.resultCombined,
+            tap = req.result["tap"],
+            hold = req.result["hold"],
+            arc = req.result["arc"],
+            arctap = req.result["arctap"],
+            timing = req.result["timing"],
+            camera = req.result["camera"],
+            scenecontrol = req.result["scenecontrol"]
+        }
         return result
     end
 
@@ -66,15 +60,16 @@ do
         local req = Event.getCurrentSelection(constraint)
         -- coroutine.yield()
         ---@type RSelectionResult
-        local result = {}
-        result.all = req.resultCombined
-        result.tap = req.result["tap"]
-        result.hold = req.result["hold"]
-        result.arc = req.result["arc"]
-        result.arctap = req.result["arctap"]
-        result.timing = req.result["timing"]
-        result.camera = req.result["camera"]
-        result.scenecontrol = req.result["scenecontrol"]
+        local result = {
+            all = req.resultCombined,
+            tap = req.result["tap"],
+            hold = req.result["hold"],
+            arc = req.result["arc"],
+            arctap = req.result["arctap"],
+            timing = req.result["timing"],
+            camera = req.result["camera"],
+            scenecontrol = req.result["scenecontrol"]
+        }
         return result
     end
 
@@ -84,15 +79,16 @@ do
         local queryResult = Event.query(constraint)
         coroutine.yield()
         ---@type RSelectionResult
-        local result = {}
-        result.tap = queryResult["tap"]
-        result.hold = queryResult["hold"]
-        result.arc = queryResult["arc"]
-        result.arctap = queryResult["arctap"]
-        result.timing = queryResult["timing"]
-        result.camera = queryResult["camera"]
-        result.scenecontrol = queryResult["scenecontrol"]
-        result.all = queryResult.resultCombined
+        local result = {
+            tap = queryResult["tap"],
+            hold = queryResult["hold"],
+            arc = queryResult["arc"],
+            arctap = queryResult["arctap"],
+            timing = queryResult["timing"],
+            camera = queryResult["camera"],
+            scenecontrol = queryResult["scenecontrol"],
+            all = queryResult.resultCombined
+        }
         return result
     end
 

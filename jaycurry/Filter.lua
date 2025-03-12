@@ -5,6 +5,7 @@ do
     ---@class rech.jaycurry.Filter
     ---Custom constraints and some built-in constraints
     local this = Class()
+    this.__index = this
 
     local positionMapping = {}
     positionMapping.timing = "e.timing"
@@ -43,6 +44,13 @@ do
 
     ---Builds a dynamic function for custom constraints, faster than chaining a lot of custom constraints.
     function this:build()
+        local f = self:_build()
+        local fn = load(f)
+        return fn
+    end
+
+    ---real build function, returns raw function string for debugging and testing
+    function this:_build()
         local typeCondition = nil
         if self.haveTypeConstraint then
             local typeofConditions = {}
@@ -53,8 +61,6 @@ do
                 end
             end
             typeCondition = "(" .. table.concat(typeofConditions, "or") .. ")"
-
-            log(string.format("Built type condition: %s", typeCondition))
         end
         -- monkey patch sky floor condition
         local skyfloorCondition = {}
@@ -69,7 +75,6 @@ do
             typeCondition = string.format("(%s and %s)", typeCondition, skyfloorConditionString)
         end
         local condition = table.concat(self.conditions, "and")
-        log(string.format("Built condition: %s", condition))
         if condition == "" then condition = " true" end
         local f = "local e = ...\n"
         if self.haveTypeConstraint then
@@ -79,8 +84,7 @@ do
             f = f .. "local tg = Event.getTimingGroup(e.timingGroup)\n"
         end
         f = f .. "return" .. condition
-        local fn = load(f)
-            return fn
+        return f
     end
 
     ---@return boolean
@@ -120,25 +124,43 @@ do
         if operator ~= nil and operator ~= "=" then error("Operator has to be = for matching " .. value .. ".") end
     end
 
+    ---@param value any
+    ---@param table table
+    local function containsKey(value, table)
+        for _,v in ipairs(value) do
+            if table[v] ~= nil then
+                return true
+            end
+        end
+        return false
+    end
+
     ---@param type ('"any"' | '"tap"' | '"hold"' | '"arc"' | '"solidarc"' | '"voidarc"' | '"trace"' | '"arctap"' | '"timing"' | '"camera"' | '"floor"' | '"sky"' | '"short"' | '"long"' | '"judgeable"')
     function this:typeof(type)
-        if type == "short" and (self.types["tap"] == true or self.types["arctap"] == true) then
+        -- ignore implied types
+        if type == "short" and containsKey({"tap", "arctap"}, self.types) then
             return self
         end
-        if type == "long" and (self.types["hold"] == true or self.types["arc"] == true) then
+        if type == "long" and containsKey({"hold", "arc", "solidarc", "voidarc", "trace"}, self.types) then
+            return self
+        end
+        if type == "arc" and containsKey({"solidarc", "voidarc", "trace"}, self.types) then
+            return self
+        end
+        if type == "floor" and containsKey({"tap", "hold"}, self.types) then
+            return self
+        end
+        if type == "sky" and containsKey({"arc", "solidarc", "voidarc", "trace", "arctap"}, self.types) then
             return self
         end
         self.types[type] = true
-        if type == "tap" or type == "hold" then
-            self.types["floor"] = true
-        end
         self.haveTypeConstraint = true
         return self
     end
 
     --- All events
 
-    ---@param value integer
+    ---@param value number
     function this:group(operator, value)
         local index = tonumber(value)
         if index == nil then
@@ -150,7 +172,7 @@ do
         return self
     end
 
-    ---@param value integer
+    ---@param value number
     function this:timing(operator, value)
         if not selfCompareMapping[value] then
             value = tonumber(value)
@@ -159,7 +181,7 @@ do
         return self
     end
 
-    ---@param value integer
+    ---@param value number
     function this:lane(operator, value)
         value = tonumber(value)
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.lane", value)
@@ -169,7 +191,7 @@ do
 
     --- Long notes
 
-    ---@param value integer
+    ---@param value number
     function this:endtiming(operator, value)
         if not selfCompareMapping[value] then
             value = tonumber(value)
@@ -178,7 +200,7 @@ do
         return self:typeof("long")
     end
 
-    ---@param value integer
+    ---@param value number
     function this:duration(operator, value)
         value = tonumber(value)
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.endTiming-e.timing", value)
